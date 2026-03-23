@@ -11,11 +11,15 @@
 
 ### 功能
 - 自动以管理员权限运行
+- **检测并关闭锁定进程**：自动识别并尝试关闭锁定目标的进程（支持 handle.exe 辅助检测）
 - 递归获取文件和文件夹的所有权
 - 为所有用户授予完全控制权限
-- 强制删除目标文件或文件夹
+- 强制删除目标文件或文件夹（支持重试机制）
 - 支持路径包含空格和特殊字符
-- 提供详细执行日志
+- 提供彩色编码的详细执行日志
+- **智能验证机制**：验证权限设置和所有权转移是否成功
+- **容错处理**：每个操作都有重试机制和错误处理
+- **进程管理**：优雅关闭进程，如失败则强制终止
 
 ### 文件说明
 - `force-delete.bat` - 批处理包装脚本，提供简单命令行界面
@@ -36,9 +40,10 @@ force-delete.bat "C:\temp\locked_file.txt"
 ```
 
 ### 工作原理
-1. **获取所有权** - 使用 `takeown` 命令获取目标路径的所有权
-2. **授予权限** - 使用 `icacls` 为 "Everyone" 组授予完全控制权限
-3. **强制删除** - 使用 PowerShell `Remove-Item -Force -Recurse` 删除目标
+0. **检测锁定进程** - 检查并尝试关闭锁定目标文件/文件夹的进程（支持 handle.exe 增强检测）
+1. **获取所有权** - 使用 `takeown` 命令获取目标路径的所有权（支持递归）
+2. **授予权限** - 使用 `icacls` 为 "Everyone" 组授予完全控制权限（支持递归）
+3. **强制删除** - 使用 PowerShell `Remove-Item -Recurse -Force` 强制删除目标（最多重试 3 次）
 
 ### 系统要求
 - Windows 7/8/10/11
@@ -58,6 +63,8 @@ force-delete.bat "C:\temp\locked_file.txt"
 3. **系统文件**：删除系统关键文件可能导致系统不稳定
 4. **数据安全**：此操作不可逆，请确认目标路径正确
 5. **路径引号**：路径包含空格时必须使用引号包裹
+6. **锁定进程**：脚本会自动检测并尝试关闭锁定文件的进程，关闭前会提示确认
+7. **Handle.exe 支持**：如有 Sysinternals Handle 工具（需添加到 PATH），可增强锁定进程检测能力
 
 ### 故障排除
 
@@ -112,11 +119,15 @@ This is a Windows batch script designed to force delete files and folders that a
 
 ### Features
 - Automatically runs with administrator privileges
+- **Locking Process Detection**: Automatically identifies and attempts to close processes locking the target (supports handle.exe for enhanced detection)
 - Recursively takes ownership of files and folders
 - Grants full control permissions to all users
-- Force deletes target files or folders
+- Force deletes target files or folders (with retry mechanism)
 - Supports paths with spaces and special characters
-- Provides detailed execution logs
+- Provides color-coded detailed execution logs
+- **Smart Verification**: Verifies that permissions and ownership are actually set correctly
+- **Fault Tolerance**: Each operation includes retry mechanisms and error handling
+- **Process Management**: Gracefully closes processes, with forced termination as fallback
 
 ### File Description
 - `force-delete.bat` - Batch wrapper script, provides simple command-line interface
@@ -137,9 +148,10 @@ force-delete.bat "C:\temp\locked_file.txt"
 ```
 
 ### How It Works
-1. **Take Ownership** - Uses `takeown` command to take ownership of the target path
-2. **Grant Permissions** - Uses `icacls` to grant full control permissions to the "Everyone" group
-3. **Force Delete** - Uses PowerShell `Remove-Item -Force -Recurse` to delete the target
+0. **Detect Locking Processes** - Checks for and attempts to close processes locking the target file/folder (handle.exe supported for enhanced detection)
+1. **Take Ownership** - Uses `takeown` command to take ownership of the target path (recursive support)
+2. **Grant Permissions** - Uses `icacls` to grant full control permissions to the "Everyone" group (recursive support)
+3. **Force Delete** - Uses PowerShell `Remove-Item -Recurse -Force` to force delete the target (up to 3 retries)
 
 ### System Requirements
 - Windows 7/8/10/11
@@ -159,6 +171,8 @@ force-delete.bat "C:\temp\locked_file.txt"
 3. **System Files**: Deleting critical system files may cause system instability
 4. **Data Safety**: This operation is irreversible, ensure the target path is correct
 5. **Path Quotes**: Paths containing spaces must be enclosed in quotes
+6. **Locking Processes**: Script automatically detects and attempts to close locking processes, prompt for confirmation before closing
+7. **Handle.exe Support**: Enhanced locking process detection available if Sysinternals Handle tool is in PATH
 
 ### Troubleshooting
 
@@ -211,6 +225,9 @@ This script is provided as-is without warranty. Use at your own risk.
 - v1.0 - Initial release
 - v1.1 - Fixed path quoting issues for paths with spaces
 - v1.1 - Improved error handling and logging
+- v1.2 - Added locking process detection and termination
+- v1.2 - Enhanced ownership verification logic
+- v1.2 - Added comprehensive retry and verification mechanisms
 
 ### Author
 Auto-generated script for force deletion operations.
