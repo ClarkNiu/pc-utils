@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir)",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"force-delete.ps1\" -?)",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"force-delete.ps1\" \"C:\\\\does_not_exist_test\")"
+    ]
+  }
+}

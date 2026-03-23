@@ -45,6 +45,13 @@ force-delete.bat "C:\temp\locked_file.txt"
 - PowerShell 5.1 或更高版本
 - 管理员权限（脚本会自动请求）
 
+### 免责声明
+
+1. 本脚本仅用于个人设备的合法文件管理，严禁用于删除他人数据、系统文件或任何违法用途
+2. 使用前请备份重要数据，作者对使用脚本导致的任何数据丢失、系统损坏不承担责任
+3. 仅授权个人非商业使用，禁止二次传播、修改或用于商业目的
+4. 若你不同意上述条款，请勿下载或使用本脚本
+
 ### 注意事项
 1. **管理员权限**：脚本需要管理员权限才能修改系统文件和受保护的文件
 2. **防病毒软件**：某些安全软件可能阻止权限修改操作
@@ -138,6 +145,13 @@ force-delete.bat "C:\temp\locked_file.txt"
 - Windows 7/8/10/11
 - PowerShell 5.1 or higher
 - Administrator privileges (script will automatically request)
+
+### Disclaimer
+
+1. This script is intended solely for legal file management on personal devices. It is strictly prohibited to use it for deleting others' data, system files, or any illegal purposes.
+2. Please back up important data before use. The author is not responsible for any data loss or system damage caused by using this script.
+3. Only authorized for personal non-commercial use. Secondary distribution, modification, or commercial use is prohibited.
+4. If you do not agree to the above terms, do not download or use this script.
 
 ### Important Notes
 1. **Administrator Privileges**: Script requires admin rights to modify system files and protected files
